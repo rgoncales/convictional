@@ -1,5 +1,4 @@
 import fetch from 'node-fetch'
-require('babel-polyfill')
 
 const get = async (req, res) => {
   const apiResponse = await fetch(
