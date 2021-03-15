@@ -1,0 +1,14 @@
+{
+  "name": "convictional-interview",
+  "version": "1.0.0",
+  "description": "Interview exercise for Convictional.",
+  "main": "app.js",
+  "scripts": {
+    "test": "test:run"
+  },
+  "author": "Rodrigo Goncales",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}
