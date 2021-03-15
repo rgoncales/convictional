@@ -8,9 +8,7 @@ app.get('/', async (req, res) => {
     'https://my-json-server.typicode.com/convictional/engineering-interview/products'
   )
   const apiResponseJson = await apiResponse.json()
-  // await db.collection('collection').insertOne(apiResponseJson)
   console.log(apiResponseJson)
-  res.send('Done – check console log')
 })
 
 app.listen(port, () => {
