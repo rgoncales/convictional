@@ -14,9 +14,11 @@ class convictionalService {
   }
 
   getProducts = async productId => {
-    const res = await this.service.get(
-      '/convictional/engineering-interview/products'
-    )
+    let query = '/convictional/engineering-interview/products/'
+    if (productId) {
+      query += productId
+    }
+    const res = await this.service.get(query)
     return res.data
   }
 }
