@@ -21,14 +21,17 @@
           }
         }
       ]
-    ]
+    ],
+    "plugins": ["@babel/plugin-proposal-class-properties"]
   },
   "author": "Rodrigo Goncales",
   "license": "ISC",
   "dependencies": {
     "@babel/cli": "^7.13.10",
     "@babel/core": "^7.13.10",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/preset-env": "^7.13.10",
+    "axios": "^0.21.1",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "node-fetch": "^2.6.1",

@@ -2,6 +2,7 @@ import express from 'express'
 import routes from './routes'
 
 const app = express()
+app.set('json spaces', 2)
 const port = 3000
 routes(app)
 

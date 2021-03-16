@@ -1,12 +1,9 @@
-import fetch from 'node-fetch'
+import convictionalService from '../service/convictionalService'
 
 const get = async (req, res) => {
-  const apiResponse = await fetch(
-    'https://my-json-server.typicode.com/convictional/engineering-interview/products'
-  )
-  const apiResponseJson = await apiResponse.json()
-  console.log(apiResponseJson)
-  res.send('Is all good')
+  const apiService = new convictionalService()
+  const products = await apiService.getProducts()
+  res.json(products)
 }
 
 export default {
