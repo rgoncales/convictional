@@ -6,6 +6,13 @@ app.set('json spaces', 2)
 const port = 3000
 routes(app)
 
+app.use(function (err, req, res, next) {
+  console.error(err.stack)
+  res.status(500).send({
+    message: err.message,
+  })
+})
+
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Listening at http://localhost:${port}`)
 })

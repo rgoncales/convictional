@@ -77,7 +77,6 @@ export class Product {
       })
       images = images.concat(temp)
     })
-    console.log(images)
     return images
   }
 

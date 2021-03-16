@@ -12,11 +12,27 @@ class convictionalService {
       },
     })
     this.service = service
+    service.interceptors.response.use(this.handleSuccess, this.handleError)
     return this
   }
 
+  handleSuccess = response => {
+    return response
+  }
+
+  handleError = async error => {
+    this.throwError(error.message)
+  }
+
   throwError = message => {
-    console.log(message)
+    throw new Error(message)
+  }
+
+  validateProductList = data => {
+    const validation = productListSchema.validate(data)
+    if (validation.error) {
+      this.throwError(validation.error)
+    }
   }
 
   getProducts = async productId => {
@@ -25,27 +41,17 @@ class convictionalService {
       query += productId
     }
     const res = await this.service.get(query)
-    const toReturn = []
-
-    if (res.data.error) {
-      this.throwError(res.data.error)
-      return toReturn
-    }
 
     let productList = []
-
     if (productId) {
       productList.push(res.data)
     } else {
       productList = res.data
     }
 
-    const validation = productListSchema.validate(productList)
-    if (validation.error) {
-      this.throwError(validationError)
-      return toReturn
-    }
+    this.validateProductList(productList)
 
+    const toReturn = []
     for (const product of productList) {
       const formatted = new Product(product)
       toReturn.push(formatted.toJSON())
@@ -58,12 +64,8 @@ class convictionalService {
     const res = await this.service.get(query)
     const toReturn = []
 
-    if (res.data.error) {
-      this.throwError(res.data.error)
-      return []
-    }
-
     const productList = res.data
+    this.validateProductList(productList)
 
     for (const product of productList) {
       for (const variant of product.variants) {
