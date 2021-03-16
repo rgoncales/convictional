@@ -21,10 +21,22 @@ class convictionalService {
       query += productId
     }
     const res = await this.service.get(query)
-    const productList = res.data
+
+    if (!res.data) {
+      // throw error
+    }
+
+    let productList = []
+
+    if (productId) {
+      productList.push(res.data)
+    } else {
+      productList = res.data
+    }
 
     const validation = productListSchema.validate(productList)
     if (validation.error) {
+      // throw error
       console.log(validation.error)
       return []
     }
