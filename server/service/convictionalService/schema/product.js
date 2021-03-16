@@ -85,3 +85,18 @@ export class Product {
     return this.model
   }
 }
+
+export class Inventory {
+  constructor({ product, variant }) {
+    this.model = {
+      productId: product.id,
+      variantId: variant.id,
+      stock: 0,
+    }
+    return this
+  }
+
+  toJSON() {
+    return this.model
+  }
+}
