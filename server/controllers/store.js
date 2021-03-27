@@ -4,7 +4,7 @@ const getInventory = async (req, res, next) => {
   try {
     const apiService = new convictionalService()
     const inventory = await apiService.getInventory()
-    res.json(inventory)
+    return res.status(200).send(inventory)
   } catch (error) {
     next(error)
   }

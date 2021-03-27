@@ -1,6 +1,8 @@
 import axios from 'axios'
+import _ from 'lodash'
 import { productListSchema, productSchema } from './validationSchema'
 import { Product, Inventory } from './schema/product'
+import { CustomError, NotFoundError, InvalidRequest } from './Error'
 
 class convictionalService {
   constructor() {
@@ -21,56 +23,65 @@ class convictionalService {
   }
 
   handleError = async error => {
-    this.throwError(error.message)
-  }
-
-  throwError = message => {
-    throw new Error(message)
+    throw new Error(error.message)
   }
 
   validateProductList = data => {
     const validation = productListSchema.validate(data)
     if (validation.error) {
-      this.throwError(validation.error)
+      throw new CustomError({
+        message: 'Invalid response from server',
+        code: 500,
+      })
     }
   }
-  
+
   validateProduct = data => {
     const validation = productSchema.validate(data)
     if (validation.error) {
-      this.throwError(validation.error)
+      throw new CustomError({
+        message: 'Invalid response from server',
+        code: 500,
+      })
     }
   }
 
   getProductList = async productId => {
-    let query = '/convictional/engineering-interview/products/'
-    const res = await this.service.get(query)
-
-    let productList = []
-    if (productId) {
-      productList.push(res.data)
-    } else {
-      productList = res.data
+    try {
+      let query = '/convictional/engineering-interview/products/'
+      const res = await this.service.get(query)
+      let productList = []
+      if (productId) {
+        productList.push(res.data)
+      } else {
+        productList = res.data
+      }
+      this.validateProductList(productList)
+      const toReturn = []
+      for (const product of productList) {
+        const formatted = new Product(product)
+        toReturn.push(formatted.toJSON())
+      }
+      return toReturn
+    } catch (e) {
+      throw new NotFoundError('Product not found')
     }
-
-    this.validateProductList(productList)
-
-    const toReturn = []
-    for (const product of productList) {
-      const formatted = new Product(product)
-      toReturn.push(formatted.toJSON())
-    }
-    return toReturn
   }
-  
-  getProduct = async productId => {
-    let query = `/convictional/engineering-interview/products/${productId}`
-    const res = await this.service.get(query)
-    let product = res.data
 
-    this.validateProduct(product)
-    product = new Product(product)
-    return product.toJSON()
+  getProduct = async productId => {
+    try {
+      let query = `/convictional/engineering-interview/products/${productId}`
+      const res = await this.service.get(query)
+      let product = res.data
+      if (_.isEmpty(res.data)) {
+        throw new NotFoundError('Product not found')
+      }
+      this.validateProduct(product)
+      product = new Product(product)
+      return product.toJSON()
+    } catch (e) {
+      throw new InvalidRequest('Invalid ID supplied')
+    }
   }
 
   getInventory = async () => {

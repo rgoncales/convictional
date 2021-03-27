@@ -4,8 +4,8 @@ const get = async (req, res, next) => {
   try {
     const { productId } = req.params
     const apiService = new convictionalService()
-    const products = await apiService.getProduct(productId)
-    res.json(products)
+    const product = await apiService.getProduct(productId)
+    return res.status(200).send(product)
   } catch (error) {
     next(error)
   }
@@ -14,8 +14,8 @@ const get = async (req, res, next) => {
 const getList = async (req, res, next) => {
   try {
     const apiService = new convictionalService()
-    const products = await apiService.getProductList()
-    res.json(products)
+    const productList = await apiService.getProductList()
+    return res.status(200).send(productList)
   } catch (error) {
     next(error)
   }
