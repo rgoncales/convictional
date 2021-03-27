@@ -37,7 +37,7 @@ export class Variant {
 export class Image {
   constructor({ image, variant }) {
     this.model = {
-      variantId: variant.id,
+      variantId: variant.id.toString(),
       source: image.src,
     }
     return this
@@ -53,7 +53,7 @@ export class Product {
     const variants = this.getVariants(data.variants)
     const images = this.getImages(data.variants)
     this.model = {
-      code: data.id,
+      code: data.id.toString(),
       title: data.title,
       bodyHtml: data.body_html,
       vendor: data.vendor,
@@ -88,8 +88,8 @@ export class Product {
 export class Inventory {
   constructor({ product, variant }) {
     this.model = {
-      productId: product.id,
-      variantId: variant.id,
+      productId: product.id.toString(),
+      variantId: variant.id.toString(),
       stock: 0,
     }
     return this
