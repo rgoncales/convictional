@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { productListSchema } from './validationSchema'
+import { productListSchema, productSchema } from './validationSchema'
 import { Product, Inventory } from './schema/product'
 
 class convictionalService {
@@ -34,12 +34,16 @@ class convictionalService {
       this.throwError(validation.error)
     }
   }
-
-  getProducts = async productId => {
-    let query = '/convictional/engineering-interview/products/'
-    if (productId) {
-      query += productId
+  
+  validateProduct = data => {
+    const validation = productSchema.validate(data)
+    if (validation.error) {
+      this.throwError(validation.error)
     }
+  }
+
+  getProductList = async productId => {
+    let query = '/convictional/engineering-interview/products/'
     const res = await this.service.get(query)
 
     let productList = []
@@ -57,6 +61,16 @@ class convictionalService {
       toReturn.push(formatted.toJSON())
     }
     return toReturn
+  }
+  
+  getProduct = async productId => {
+    let query = `/convictional/engineering-interview/products/${productId}`
+    const res = await this.service.get(query)
+    let product = res.data
+
+    this.validateProduct(product)
+    product = new Product(product)
+    return product.toJSON()
   }
 
   getInventory = async () => {

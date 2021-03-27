@@ -15,7 +15,7 @@ export class Weight {
 export class Variant {
   constructor(data) {
     this.model = {
-      id: data.id,
+      id: data.id.toString(),
       title: data.title,
       sku: data.sku,
       available: false,
