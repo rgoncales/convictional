@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  nodejs-es6-app:
-    image: nodejs-es6-image
+  convictional-app:
+    image: convictional-app
     build:
       context: ./
       dockerfile: Dockerfile
